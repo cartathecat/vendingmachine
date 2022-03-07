@@ -612,6 +612,7 @@ When ran, the following screen is displayed:
 
 </br>
 
+
 ## Impprovements
 
 There can be many improvements to the Vending Machine microservice, includimg:
