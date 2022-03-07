@@ -335,7 +335,7 @@ ResponseStatus: 500
 
 ## Vend a product
 To vend a product:
-
+ 
 Request
 ```
 POST
