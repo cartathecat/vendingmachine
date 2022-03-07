@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,7 +48,7 @@ public class VendingMachineController {
 	 * @param coins
 	 * @return
 	 */
-	@GetMapping(value = "/init/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/init/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> initVending(@PathVariable List<String> coins) {
 		log.debug("initVending end-point");
 		log.debug("Coins: {}", coins);
@@ -75,7 +76,7 @@ public class VendingMachineController {
 	 * @param coins
 	 * @return
 	 */
-	@GetMapping(value = "/deposit/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.POST, value = "/deposit/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> deposit(@PathVariable List<String> coins) {
 		log.debug("deposit end-point");
 
@@ -110,7 +111,7 @@ public class VendingMachineController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping(value = "/vend/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(method = RequestMethod.PUT, value = "/vend/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> vend(@PathVariable int id) {
 		log.debug("vend end-point");
 
