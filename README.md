@@ -622,7 +622,6 @@ http:[HOST]:[PORT]/swagger-ui
 </br>
 
 
-
 ## Impprovements
 
 There can be many improvements to the Vending Machine microservice, includimg:
