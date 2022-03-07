@@ -19,8 +19,11 @@ import app.com.vending.machine.service.VendingMachineCoinBucket;
 import app.com.vending.machine.service.VendingMachineDeposit;
 import app.com.vending.machine.service.VendingMachineFloat;
 import app.com.vending.machine.service.VendingMachineServiceImpl;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.*;
 
 @SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "VendingMachine API", version = "1.0", description = "VendingMachine simulator"))
 public class VendingMachineApplication {
 
 	public static void main(String[] args) {
@@ -61,5 +64,6 @@ public class VendingMachineApplication {
 	public VendingMachineServiceImpl vendingMachineServiceImpl() {
 		return new VendingMachineServiceImpl();
 	}
+	
 	
 }

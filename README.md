@@ -616,6 +616,9 @@ When ran, the following screen is displayed:
 
 There can be many improvements to the Vending Machine microservice, includimg:
 
+* Amemd /init endpoint to be a POST and pass a payload body
+* Amend /deposit endpoint to be a POST and pass a payload body
+* Amend /vend endpoint to be a PUT
 * Unique errors, rather than using Spring Boot ``ResponseStatusException`` 
 * Authenticate when coins are deposited, to stop other users continuing with the vend
 * Timeout and issue a refund when no action operation is performed after coins are deposited.
