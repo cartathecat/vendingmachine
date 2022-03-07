@@ -615,7 +615,7 @@ When ran, the following screen is displayed:
 ## Swagger
 Swagger endpoint is included
 
-http:[HOST]:[PORT]/swagger-ui
+http:[HOST]:[PORT]/swagger-ui.html
 
 [Top](#Vending-Machine)
 
