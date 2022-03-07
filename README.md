@@ -607,10 +607,10 @@ The Vending Machine test harness is a simple Java console application.
 When ran, the following screen is displayed:
 
 
+
 [Top](#Vending-Machine)
 
 </br>
-
 
 ## Swagger
 Swagger endpoint is included
@@ -621,7 +621,7 @@ http:[HOST]:[PORT]/swagger-ui.html
 
 </br>
 
-
+ 
 ## Impprovements
 
 There can be many improvements to the Vending Machine microservice, includimg:
