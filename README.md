@@ -3,7 +3,7 @@
 ## Dependencies
 The following dependencies are required to build the Vending Machine microservice and the Vending Machine test harness.
 
-* Java version 1.8 (Sorry, I dont have v11 on my laptop)
+* Java version 11 
 
 #
 ##### Table of Contents  
