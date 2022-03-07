@@ -21,6 +21,7 @@ The following dependencies are required to build the Vending Machine microservic
 [Coin Bucket](#Coin-Bucket)  
 [Float and deposited values](#Float-and-deposited-values)  
 [Vending Machine status](#Vending-Machine-status)  
+[Swagger](#Swagger)  
 
 <br/>
 
@@ -607,15 +608,27 @@ When ran, the following screen is displayed:
 
 
 
+[Top](#Vending-Machine)
+
+</br>
+
+## Swagger
+Swagger endpoint is included
+
+http:[HOST]:[PORT]/swagger-ui
 
 [Top](#Vending-Machine)
 
 </br>
 
+
 ## Impprovements
 
 There can be many improvements to the Vending Machine microservice, includimg:
 
+* Amemd /init endpoint to be a POST and pass a payload body
+* Amend /deposit endpoint to be a POST and pass a payload body
+* Amend /vend endpoint to be a PUT
 * Unique errors, rather than using Spring Boot ``ResponseStatusException`` 
 * Authenticate when coins are deposited, to stop other users continuing with the vend
 * Timeout and issue a refund when no action operation is performed after coins are deposited.
