@@ -21,6 +21,7 @@ The following dependencies are required to build the Vending Machine microservic
 [Coin Bucket](#Coin-Bucket)  
 [Float and deposited values](#Float-and-deposited-values)  
 [Vending Machine status](#Vending-Machine-status)  
+[Swagger](#Swagger)  
 
 <br/>
 
@@ -606,7 +607,15 @@ The Vending Machine test harness is a simple Java console application.
 When ran, the following screen is displayed:
 
 
+[Top](#Vending-Machine)
 
+</br>
+
+
+## Swagger
+Swagger endpoint is included
+
+http:[HOST]:[PORT]/swagger-ui
 
 [Top](#Vending-Machine)
 
