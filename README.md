@@ -135,7 +135,7 @@ To initialise the vending machine with coins:
 
 Request
 ```
-GET
+POST
 http://{HOST}:{PORT}/vendingmachine/v1/init/TWOPOUND:5,ONEPOUND:10,FIFTY:10,TWENTY:10,TEN:20,FIVE:20,TWO:20,ONE:20
 ```
 
@@ -298,7 +298,7 @@ To deposit coins to vend products:
 
 Request
 ```
-GET
+POST
 http://{HOST}:{PORT}/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:2
 ```
 
@@ -338,7 +338,7 @@ To vend a product:
 
 Request
 ```
-GET
+POST
 http://{HOST}:{PORT}/vendingmachine/v1/vend/1
 ```
 
@@ -615,7 +615,7 @@ When ran, the following screen is displayed:
 ## Swagger
 Swagger endpoint is included
 
-http:[HOST]:[PORT]/swagger-ui
+http:[HOST]:[PORT]/swagger-ui.html
 
 [Top](#Vending-Machine)
 
