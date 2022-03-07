@@ -13,6 +13,8 @@ package app.com.vending.machine;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,7 +55,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testA() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 		.andExpect(status()
 		.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
 		.andDo(MockMvcResultHandlers.print())
@@ -70,7 +72,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testB() throws Exception {		
 		String endpoint = "/vendingmachine/v1/init/TWOPOUND:5,ONEPOUND:10,FIFTY:10,TWENTY:10,TEN:20,FIVE:20,TWO:20,ONE:20";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -104,7 +106,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testC() throws Exception {
 		String endpoint = "/vendingmachine/v1/init";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.is(HttpStatus.NOT_FOUND.value()))
 			.andDo(MockMvcResultHandlers.print());
@@ -118,7 +120,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testD() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/NOTVALID:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.is(HttpStatus.BAD_REQUEST.value()))
 			.andDo(MockMvcResultHandlers.print())
@@ -134,7 +136,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testE() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/ONEPOUND:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
 			.andDo(MockMvcResultHandlers.print())
@@ -150,7 +152,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testF() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -158,7 +160,7 @@ class VendingMachineApplicationTests {
 			.json("{\"deposit\":100,\"message\":\"Deposit\"}"));
 		
 		endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -190,7 +192,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testG() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/ONEPOUND:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
 			.andDo(MockMvcResultHandlers.print())
@@ -207,7 +209,7 @@ class VendingMachineApplicationTests {
 		
 		String actualProduct = "Cheese and Onion Crisps";	
 		String endpoint = "/vendingmachine/v1/vend/1";		
-		MvcResult result = this.mvc.perform(get(endpoint))
+		MvcResult result = this.mvc.perform(put(endpoint))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andReturn();
@@ -221,7 +223,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testI() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:3";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -229,7 +231,7 @@ class VendingMachineApplicationTests {
 			.json("{\"deposit\":300,\"message\":\"Deposit\"}"));
 		
 		endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -238,7 +240,7 @@ class VendingMachineApplicationTests {
 	
 		String actualProduct = "Coka Cola";	
 		endpoint = "/vendingmachine/v1/vend/7";		
-		MvcResult result = this.mvc.perform(get(endpoint))
+		MvcResult result = this.mvc.perform(put(endpoint))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andReturn();
@@ -269,7 +271,7 @@ class VendingMachineApplicationTests {
 	public void testJ() throws Exception {
 		
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
 			.andDo(MockMvcResultHandlers.print())
@@ -295,7 +297,7 @@ class VendingMachineApplicationTests {
 	@Test
 	public void testK() throws Exception {
 		String endpoint = "/vendingmachine/v1/vend/7";
-		this.mvc.perform(get(endpoint))
+		this.mvc.perform(put(endpoint))
 			.andExpect(status()
 			.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
 			.andDo(MockMvcResultHandlers.print())
