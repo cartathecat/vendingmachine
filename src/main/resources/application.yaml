@@ -1,7 +1,29 @@
+spring:
+  application:
+    name: VendingMachine
 logging:
   level:
     org:
       springframework: OFF
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+info:
+  app:
+    name: ${spring.application.name}
+    description: Vending Machine API
+    version: '@project.version@'
+    encoding: '@project.build.sourceEncoding@'
+    java:
+      version: '@java.version@'
 server:
   port: 8091
   error:
