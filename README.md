@@ -108,7 +108,7 @@ For further details on how to [Spring YAML Configuration](https://docs.spring.io
 The Vending Machine test harness can be run as:
 
 ```
-java -jar .\target\VendingTestHarness-1.0.0.0.jar [-p {port} -t {timeout}]
+java -jar .\{file location}\VendingTestHarness-1.0.0.0.jar [-p {port} -t {timeout}]
 ```
 
 Valid arguments are:
