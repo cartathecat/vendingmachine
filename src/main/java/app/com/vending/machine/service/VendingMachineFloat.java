@@ -21,7 +21,7 @@ public class VendingMachineFloat {
 	private int floatValue;
 
 	public VendingMachineFloat() {
-		log.info("VendingMachineFloat");
+		log.debug("VendingMachineFloat");
 	}
 
 	public VendingMachineFloat(int value) {
@@ -30,14 +30,14 @@ public class VendingMachineFloat {
 
 
 	// Float value
-	public int getFloatValue() {
+	public int GetFloatValue() {
 		return this.floatValue;
 	}
 	public void SetFloatValue(int value) {
-		this.floatValue = this.floatValue + value;
+		this.floatValue += value;
 	}
-	public void reduceFloatValue(int value) {
-		this.floatValue = this.floatValue - value;
+	public void ReduceFloatValue(int value) {
+		this.floatValue -= value;
 	}
 	
 

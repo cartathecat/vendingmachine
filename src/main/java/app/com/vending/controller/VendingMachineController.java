@@ -56,17 +56,17 @@ public class VendingMachineController {
 		// Validate the coins
 		this.vendingMachine.ValidateCoins(coins);
 
-		if (this.vendingMachine.getStatus().equals(STATUS.READY_TO_VEND)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.READY_TO_VEND)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine has already been initialized");
 		}
-		if (this.vendingMachine.getStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is in vending status");
 		}
 
 		// calculate the float value
 		this.vendingMachine.Initialise(this.vendingMachine.CalculateFloat(coins));		
 		
-		log.debug("Status of vending machine ...{}", this.vendingMachine.getStatus() );
+		log.debug("Status of vending machine ...{}", this.vendingMachine.GetStatus() );
 		return new ResponseEntity<>(this.vendingMachine.GenericResponse("Vending initialised"), HttpStatus.OK);
 	}
 
@@ -82,7 +82,7 @@ public class VendingMachineController {
 
 		this.vendingMachine.ValidateCoins(coins);
 
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
@@ -98,7 +98,7 @@ public class VendingMachineController {
 	public @ResponseBody ResponseEntity<?> products() {
 		log.debug("products end-point");
 		
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
@@ -115,10 +115,10 @@ public class VendingMachineController {
 	public @ResponseBody ResponseEntity<?> vend(@PathVariable int id) {
 		log.debug("vend end-point");
 
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
-		if (!this.vendingMachine.getStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
+		if (!this.vendingMachine.GetStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Please deposit money");
 		}
 		
@@ -134,7 +134,7 @@ public class VendingMachineController {
 	public @ResponseBody ResponseEntity<?> refund() {
 		log.debug("refund end-point");
 		
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		
@@ -149,7 +149,7 @@ public class VendingMachineController {
 	@GetMapping(value = "/floatvalue", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> floatValue() {
 		log.debug("floatvalue end-point");
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		
@@ -164,7 +164,7 @@ public class VendingMachineController {
 	@GetMapping(value = "/coinbucket", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> coinBucket() {
 		log.debug("coinBucket end-point");
-		if (this.vendingMachine.getStatus().equals(STATUS.INACTIVE)) {
+		if (this.vendingMachine.GetStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
