@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import app.com.vending.entities.ChangeReturnResponse;
 import app.com.vending.entities.Coins;
-//import app.com.vending.entities.Coins.COINVALUE;
 
 @ComponentScan
 public class VendingMachineCoinBucket extends Coins {
