@@ -18,7 +18,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.ClassOrderer.OrderAnnotation;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics;
@@ -29,18 +33,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import app.com.vending.entities.VendResponse;
 import org.junit.Assert;
-
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureMetrics
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class VendingMachineApplicationTests {
 
 	@Autowired
@@ -55,7 +57,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testA() throws Exception {
+	@Order(1)
+	public void whenVendingMachineIsNotInitialised_depostMoney_givingVendingMachineIsNotItitialisedError() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1";
 		this.mvc.perform(post(endpoint))
 		.andExpect(status()
@@ -72,7 +75,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testB() throws Exception {		
+	@Order(2)
+	public void whenVendingMachineIsNotInitialised_depositMoney_givingDepositedMoney_andFloatValue() throws Exception {		
 		String endpoint = "/vendingmachine/v1/init/TWOPOUND:5,ONEPOUND:10,FIFTY:10,TWENTY:10,TEN:20,FIVE:20,TWO:20,ONE:20";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -106,7 +110,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testC() throws Exception {
+	@Order(3)
+	public void whenGivenAnInvalidEndpoint_tryInitialising_givingEndpointNotFound() throws Exception {
 		String endpoint = "/vendingmachine/v1/init";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -120,7 +125,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testD() throws Exception {
+	@Order(4)
+	public void whenInitialisingVendingMachine_passInvalidCoin_givingInvalidCoin() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/NOTVALID:1";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -136,7 +142,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testE() throws Exception {
+	@Order(5)
+	public void givenAnInitialisedVendingMachine_initalisedVendingMachine_givingVendingMachineAlreadyInitialised() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/ONEPOUND:1";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -152,7 +159,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testF() throws Exception {
+	@Order(6)
+	public void givenOnePoundCoinToDeposit_depostCoins_givingCoinDeposited() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -161,7 +169,13 @@ class VendingMachineApplicationTests {
 			.andExpect(content()			
 			.json("{\"deposit\":100,\"message\":\"Deposit\"}"));
 		
-		endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
+	}
+	
+	
+	@Test
+	@Order(7)
+	public void givenOnePoundFiftyCoinsToDeposit_depostCoins_givingCoinDeposited_andFloatValueAndCoinsBucket() throws Exception {
+		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
 			.isOk())
@@ -192,7 +206,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testG() throws Exception {
+	@Order(8)
+	public void givenCoinsToInitialise_initialsiedTheVendingMachine_givenMachineIsInVendingStatus() throws Exception {
 		String endpoint = "/vendingmachine/v1/init/ONEPOUND:1";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -207,8 +222,8 @@ class VendingMachineApplicationTests {
 	 * Vend item 1 ...
 	 */
 	@Test
-	public void testH() throws Exception {
-
+	@Order(9)
+	public void givingAVendingMachineWithCoinsDeposited_listAndVendAProduct_givingAListOfProductsAndVendItem() throws Exception {
 		String endpoint = "/vendingmachine/v1/products";	
 		this.mvc.perform(get(endpoint))
 		.andExpect(status()
@@ -229,7 +244,8 @@ class VendingMachineApplicationTests {
 
 	
 	@Test
-	public void testI() throws Exception {
+	@Order(10)
+	public void givenAnInitialisedVendingMachine_depositCoinsAndVend_givenDepositedAmountAndVendedItem() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:3";
 		this.mvc.perform(post(endpoint))
 			.andExpect(status()
@@ -257,7 +273,12 @@ class VendingMachineApplicationTests {
 		VendResponse response = objectMapper.readValue(contentAsString, VendResponse.class);
 		Assert.assertEquals(response.getProduct().getDescription(), actualProduct);
 
-		endpoint = "/vendingmachine/v1/coinbucket";
+	}
+	
+	@Test
+	@Order(11)
+	public void givenAnInitialisedVendingMachine_requestCoinBucjetAndFloat_givingCoinBucketAndFLoat() throws Exception {
+		String endpoint = "/vendingmachine/v1/coinbucket";
 		this.mvc.perform(get(endpoint))
 			.andExpect(status()
 			.isOk())
@@ -276,7 +297,8 @@ class VendingMachineApplicationTests {
 	}
 	
 	@Test
-	public void testJ() throws Exception {
+	@Order(12)
+	public void givenAnInitialisedVendingMachine_depostCoinsForRefund_givingAValidRefund() throws Exception {
 		
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1,FIFTY:1";
 		this.mvc.perform(post(endpoint))
@@ -303,7 +325,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testK() throws Exception {
+	@Order(13)
+	public void givenAnInitialisedVendingMachine_vendAnItemWithNoDepositedCoins_givingPleaseDepositMoney() throws Exception {
 		String endpoint = "/vendingmachine/v1/vend/7";
 		this.mvc.perform(put(endpoint))
 			.andExpect(status()
@@ -319,7 +342,8 @@ class VendingMachineApplicationTests {
 	 * @throws Exception
 	 */
 	@Test
-	public void testX() throws Exception {
+	@Order(14)
+	public void givenPostedHttpRequests_validatePrometheusHttpCounts_givingExpectedHttpCountsPerCallType() throws Exception {
 		String endpoint = "/actuator/prometheus";		
 		MvcResult result = this.mvc.perform(get(endpoint))
 			.andExpect(status()

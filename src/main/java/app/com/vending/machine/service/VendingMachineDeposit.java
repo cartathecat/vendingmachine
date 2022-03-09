@@ -12,10 +12,9 @@ package app.com.vending.machine.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
-import app.com.vending.entities.Coins;
 
 @ComponentScan
-public class VendingMachineDeposit extends Coins {
+public class VendingMachineDeposit {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineDeposit.class);
 	

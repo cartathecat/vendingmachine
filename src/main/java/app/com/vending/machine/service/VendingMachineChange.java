@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import app.com.vending.entities.Coins;
 
 @ComponentScan
-public class VendingMachineChange extends Coins {
+public class VendingMachineChange {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineChange.class);
 
