@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureMetrics
 class VendingMachineApplicationTests {
 
 	@Autowired
@@ -206,9 +208,15 @@ class VendingMachineApplicationTests {
 	 */
 	@Test
 	public void testH() throws Exception {
-		
+
+		String endpoint = "/vendingmachine/v1/products";	
+		this.mvc.perform(get(endpoint))
+		.andExpect(status()
+		.isOk())
+		.andDo(MockMvcResultHandlers.print());
+
 		String actualProduct = "Cheese and Onion Crisps";	
-		String endpoint = "/vendingmachine/v1/vend/1";		
+		endpoint = "/vendingmachine/v1/vend/1";		
 		MvcResult result = this.mvc.perform(put(endpoint))
 			.andDo(print())
 			.andExpect(status().isOk())
@@ -304,6 +312,69 @@ class VendingMachineApplicationTests {
 			.andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
 			.andExpect(status().reason(containsString("Please deposit money")));
 	
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testX() throws Exception {
+		String endpoint = "/actuator/prometheus";		
+		MvcResult result = this.mvc.perform(get(endpoint))
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print())
+			.andReturn();
+		
+		String contentAsString = result.getResponse().getContentAsString();
+
+		// init
+		boolean match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"POST\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/init/{coins}\",} 1.0");
+		Assert.assertTrue(match);		
+
+		// products
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"GET\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/products\",} 1.0");
+		Assert.assertTrue(match);		
+
+		// Deposit
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"POST\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/deposit/{coins}\",} 5.0");
+		Assert.assertTrue(match);		
+
+		// Refund
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"GET\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/refund\",} 1.0");
+		Assert.assertTrue(match);		
+
+		// Coin bucket
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"GET\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/coinbucket\",} 3.0");
+		Assert.assertTrue(match);		
+
+		// Vend
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"PUT\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/vend/{id}\",} 2.0");
+		Assert.assertTrue(match);		
+
+		// Float
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"GET\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/floatvalue\",} 3.0");
+		Assert.assertTrue(match);		
+
+		
+		// Deposit error
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"ResponseStatusException\",method=\"POST\",outcome=\"SERVER_ERROR\",status=\"500\",uri=\"/vendingmachine/v1/deposit/{coins}\",} 1.0");
+		Assert.assertTrue(match);		
+	
+		// Init client error
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"ResponseStatusException\",method=\"POST\",outcome=\"CLIENT_ERROR\",status=\"400\",uri=\"/vendingmachine/v1/init/{coins}\",} 1.0");
+		Assert.assertTrue(match);		
+		
+		// Vend error
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"ResponseStatusException\",method=\"PUT\",outcome=\"SERVER_ERROR\",status=\"500\",uri=\"/vendingmachine/v1/vend/{id}\",} 1.0");
+		Assert.assertTrue(match);		
+
+		// Vend server error
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"ResponseStatusException\",method=\"POST\",outcome=\"SERVER_ERROR\",status=\"500\",uri=\"/vendingmachine/v1/init/{coins}\",} 2.0");
+		Assert.assertTrue(match);		
+		
+		
 	}
 
 }
