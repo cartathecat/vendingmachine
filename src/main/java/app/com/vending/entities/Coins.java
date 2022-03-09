@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @EntityScan
-public class Coins {
+public abstract class Coins {
 
 	private final static Logger log = LoggerFactory.getLogger(Coins.class);
 	

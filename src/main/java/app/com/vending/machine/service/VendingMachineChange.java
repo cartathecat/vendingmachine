@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 
+import app.com.vending.entities.Coins;
+
 @ComponentScan
-public class VendingMachineChange {
+public class VendingMachineChange extends Coins {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineChange.class);
 
@@ -35,7 +37,7 @@ public class VendingMachineChange {
 
 	@Override
 	public String toString() {
-		return "VendingMachineChange [changeValue=" + changeValue + "]";
+		return "VendingMachineChange [changeValue=" + GetChangeValue() + "]";
 	}
 	
 	

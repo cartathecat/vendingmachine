@@ -20,10 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import app.com.vending.entities.ChangeReturnResponse;
 import app.com.vending.entities.Coins;
-import app.com.vending.entities.Coins.COINVALUE;
+//import app.com.vending.entities.Coins.COINVALUE;
 
 @ComponentScan
-public class VendingMachineCoinBucket {
+public class VendingMachineCoinBucket extends Coins {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineCoinBucket.class);
 
@@ -32,10 +32,6 @@ public class VendingMachineCoinBucket {
 
 	public VendingMachineCoinBucket() {
 		log.debug("VendingMachineCoinBucket");
-	}
-
-	public Map<Coins.COINVALUE, Integer> getVendingMachineCoinBucket() {
-		return this.floatCoinBucket;
 	}
 
 	/**
@@ -380,7 +376,7 @@ public class VendingMachineCoinBucket {
 	
 	@Override
 	public String toString() {
-		return "VendingMachineChange [coinBucket=" + this.floatCoinBucket + "]";
+		return "VendingMachineChange [coinBucket=" + GetFloatCoinBucket() + "]";
 	}
 	
 	

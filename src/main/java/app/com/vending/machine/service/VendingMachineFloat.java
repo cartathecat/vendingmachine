@@ -13,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 
+import app.com.vending.entities.Coins;
+
 @ComponentScan
-public class VendingMachineFloat {
+public class VendingMachineFloat extends Coins {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineFloat.class);
 	
@@ -43,7 +45,7 @@ public class VendingMachineFloat {
 
 	@Override
 	public String toString() {
-		return "VendingMachineFloat [floatValue=" + floatValue + "]";
+		return "VendingMachineFloat [floatValue=" + GetFloatValue() + "]";
 	}
 	
 	
