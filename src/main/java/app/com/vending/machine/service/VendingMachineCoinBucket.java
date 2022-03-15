@@ -375,7 +375,7 @@ public class VendingMachineCoinBucket extends Coins {
 	
 	@Override
 	public String toString() {
-		return "VendingMachineChange [coinBucket=" + GetFloatCoinBucket() + "]";
+		return String.format("VendingMachineCoinBucket [floatCoinBucket=%s]", floatCoinBucket);
 	}
 	
 	

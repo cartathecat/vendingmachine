@@ -44,7 +44,7 @@ public class VendingMachineFloat extends Coins {
 
 	@Override
 	public String toString() {
-		return "VendingMachineFloat [floatValue=" + GetFloatValue() + "]";
+		return String.format("VendingMachineFloat [floatValue=%s]", floatValue);
 	}
 	
 	

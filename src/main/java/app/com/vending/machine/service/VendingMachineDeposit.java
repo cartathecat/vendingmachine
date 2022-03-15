@@ -43,7 +43,7 @@ public class VendingMachineDeposit {
 
 	@Override
 	public String toString() {
-		return "VendingMachineDeposit [depositValue=" + GetDepositValue() + "]";
+		return String.format("VendingMachineDeposit [depositValue=%s]", depositValue);
 	}
 	
 	

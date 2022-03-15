@@ -71,7 +71,8 @@ public class VendResponse {
 
 	@Override
 	public String toString() {
-		return "Vend [product=" + product + ", change=" + change + ", changeReturn=" + changeReturnResponse + "]";
+		return String.format("VendResponse [product=%s, change=%s, vendtype=%s, changeReturnResponse=%s]", product,
+				change, vendtype, changeReturnResponse);
 	}
 
 }

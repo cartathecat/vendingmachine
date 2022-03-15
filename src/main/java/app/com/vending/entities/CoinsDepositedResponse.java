@@ -34,10 +34,10 @@ public class CoinsDepositedResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+		
 	@Override
 	public String toString() {
-		return "Deposit [deposit=" + deposit + ", message=" + message + "]";
+		return String.format("CoinsDepositedResponse [deposit=%s, message=%s]", deposit, message);
 	}
 	
 }

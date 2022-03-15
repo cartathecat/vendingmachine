@@ -32,7 +32,7 @@ public class VendingMachineStatusResponse {
 
 	@Override
 	public String toString() {
-		return "VendingMachineStatus [status=" + status + "]";
+		return String.format("VendingMachineStatusResponse [status=%s]", status);
 	}
 	
 	

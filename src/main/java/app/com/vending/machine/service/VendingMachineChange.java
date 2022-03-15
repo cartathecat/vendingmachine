@@ -36,7 +36,7 @@ public class VendingMachineChange {
 
 	@Override
 	public String toString() {
-		return "VendingMachineChange [changeValue=" + GetChangeValue() + "]";
+		return String.format("VendingMachineChange [changeValue=%s]", changeValue);
 	}
 	
 	

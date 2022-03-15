@@ -35,7 +35,7 @@ public class GenericResponse {
 
 	@Override
 	public String toString() {
-		return "StatusReponse [message=" + message + "]";
+		return String.format("GenericResponse [message=%s]", message);
 	}
 	
 }

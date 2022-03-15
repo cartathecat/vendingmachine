@@ -40,7 +40,7 @@ public class ChangeReturnResponse {
 
 	@Override
 	public String toString() {
-		return "ChangeReturn [coinName=" + coinName + ", coinQuantity=" + coinQuantity + "]";
+		return String.format("ChangeReturnResponse [coinName=%s, coinQuantity=%s]", coinName, coinQuantity);
 	}
 	
 }

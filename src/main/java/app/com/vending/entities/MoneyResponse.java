@@ -39,7 +39,7 @@ public class MoneyResponse {
 	
 	@Override
 	public String toString() {
-		return "TotalMoney [floatValue=" + floatValue + ", depositValue=" + depositValue + "]";
+		return String.format("MoneyResponse [floatValue=%s, depositValue=%s]", floatValue, depositValue);
 	}
 	
 }
