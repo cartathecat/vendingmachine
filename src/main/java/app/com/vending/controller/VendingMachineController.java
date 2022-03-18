@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import app.com.vending.entities.CoinsDepositedResponse;
+import app.com.vending.entities.GenericResponse;
 import app.com.vending.entities.VendResponse;
 import app.com.vending.machine.VendingMachine;
 import app.com.vending.machine.VendingMachine.STATUS;
@@ -86,7 +87,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
-		return new ResponseEntity<CoinsDepositedResponse>(this.vendingMachine.DepositAmount(coins), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.DepositAmount(coins), HttpStatus.OK);
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
-		return new ResponseEntity<List<?>>(this.vendingMachine.Products(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.Products(), HttpStatus.OK);
 	}
 	
 	/**
@@ -122,7 +123,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Please deposit money");
 		}
 		
-		return new ResponseEntity<VendResponse>(this.vendingMachine.VendItem(id), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.VendItem(id), HttpStatus.OK);
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		
-		return new ResponseEntity<VendResponse>(this.vendingMachine.IssueRefund(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.IssueRefund(), HttpStatus.OK);
 	}
 
 	/**
@@ -153,7 +154,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		
-		return new ResponseEntity<Object>(this.vendingMachine.GetFloat(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.GetFloat(), HttpStatus.OK);
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class VendingMachineController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 
-		return new ResponseEntity<Object>(this.vendingMachine.GetCoinBucket(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.GetCoinBucket(), HttpStatus.OK);
 	}
 	
 	/**
@@ -179,7 +180,7 @@ public class VendingMachineController {
 	@GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> getStatus() {
 		log.debug("status end-point");
-		return new ResponseEntity<Object>(this.vendingMachine.GetVendingStatus(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.GetVendingStatus(), HttpStatus.OK);
 	}
 	
 }
