@@ -43,6 +43,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @AutoConfigureMockMvc
 @AutoConfigureMetrics
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Order(2)
 class VendingMachineApplicationTests {
 
 	@Autowired
@@ -61,11 +62,11 @@ class VendingMachineApplicationTests {
 	public void whenVendingMachineIsNotInitialised_depostMoney_givingVendingMachineIsNotItitialisedError() throws Exception {
 		String endpoint = "/vendingmachine/v1/deposit/ONEPOUND:1";
 		this.mvc.perform(post(endpoint))
-		.andExpect(status()
-		.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-		.andDo(MockMvcResultHandlers.print())
-		.andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
-		.andExpect(status().reason(containsString("Vending machine is not yet initialised")));
+			.andExpect(status()
+			.is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+			.andExpect(status().reason(containsString("Vending machine is not yet initialised")));
 	
 	}
 	

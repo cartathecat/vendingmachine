@@ -83,7 +83,7 @@ public class VendingMachine {
 	 * Validate the coins 
 	 * @param coins
 	 */
-	public void ValidateCoins(List<String> coins) {
+	private void ValidateCoins(List<String> coins) {
 		for (String c: coins) {
 			String[] s = c.split(":");			
 			boolean coinValid = Coins.COINVALUE.coinValid(s[0].toUpperCase());
