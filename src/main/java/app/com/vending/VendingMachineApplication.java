@@ -12,6 +12,8 @@ package app.com.vending;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+
 import app.com.vending.machine.VendingMachine;
 import app.com.vending.machine.repository.Repository;
 import app.com.vending.machine.service.VendingMachineChange;

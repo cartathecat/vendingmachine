@@ -26,7 +26,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineServiceImpl.class);
 			
 	@Autowired
-	public Repository repository;
+	private Repository repository;
 
 	@Autowired
 	private VendingMachineFloat vendingMachineFloat;
@@ -38,7 +38,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	private VendingMachineChange vendingMachineChange;
 
 	@Autowired
-	public VendingMachineCoinBucket vendingMachineCoinBucket;
+	private VendingMachineCoinBucket vendingMachineCoinBucket;
 	
 	public VendingMachineFloat VendingMachineFloat() {
 		return this.vendingMachineFloat;
