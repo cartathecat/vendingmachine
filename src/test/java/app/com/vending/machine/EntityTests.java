@@ -34,7 +34,7 @@ public class EntityTests {
 	@Order(2)
 	public void CoinDepositedResponse() throws Exception {		
 		CoinsDepositedResponse cdr = new CoinsDepositedResponse(200, "Coins deposited");
-		Assert.assertEquals("CoinsDepositedResponse [deposit=200, message=Coins deposited]]", cdr.toString());		
+		Assert.assertEquals("CoinsDepositedResponse [deposit=200, message=Coins deposited]", cdr.toString());		
 	}
 	
 }
