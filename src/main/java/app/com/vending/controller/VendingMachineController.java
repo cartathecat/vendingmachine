@@ -6,6 +6,7 @@ package app.com.vending.controller;
  * March 2022
  * 
  * Controller to accept requests
+ * Refactored to move throws into service layer
  *  
  */
 
