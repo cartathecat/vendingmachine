@@ -36,4 +36,5 @@ public class EntityTests {
 		CoinsDepositedResponse cdr = new CoinsDepositedResponse(200, "Coins deposited");
 		Assert.assertEquals("CoinsDepositedResponse [deposit=200, message=Coins deposited]]", cdr.toString());		
 	}
+	
 }
