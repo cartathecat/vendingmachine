@@ -33,8 +33,12 @@ public class VendingMachine {
 		VENDING_IN_PROGRESS
 	}
 	
-	@Autowired
 	private VendingMachineServiceImpl vendingMachineServiceImpl;
+	
+	@Autowired
+	public void SetVendingMachineServiceImpl(VendingMachineServiceImpl v) {
+		this.vendingMachineServiceImpl = v;
+	}
 	
 	private STATUS status;
 	

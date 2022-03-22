@@ -46,12 +46,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Order(2)
 class VendingMachineApplicationTests {
 
-	@Autowired
 	private MockMvc mvc;
-	
-	@Autowired
 	private ObjectMapper objectMapper;
 
+	@Autowired
+	public void SetMockMvc(MockMvc v) {
+		this.mvc = v;
+	}
+	
+	@Autowired
+	public void SetObjectMapper(ObjectMapper v) {
+		this.objectMapper = v;
+	}
+	
 	/**
 	 * Try to depsit money before initialised
 	 * 

@@ -25,20 +25,35 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineServiceImpl.class);
 			
-	@Autowired
 	private Repository repository;
-
-	@Autowired
 	private VendingMachineFloat vendingMachineFloat;
-
-	@Autowired
 	private VendingMachineDeposit vendingMachineDeposit;
-
-	@Autowired
 	private VendingMachineChange vendingMachineChange;
+	private VendingMachineCoinBucket vendingMachineCoinBucket;
+	
+	@Autowired
+	public void SetRepository(Repository v) {
+		this.repository = v;
+	}
+	@Autowired
+	public void SetVendingMachineFloat(VendingMachineFloat v) {
+		this.vendingMachineFloat = v;
+	}
 
 	@Autowired
-	private VendingMachineCoinBucket vendingMachineCoinBucket;
+	public void SetVendingMachineDeposit(VendingMachineDeposit v) {
+		this.vendingMachineDeposit = v;
+	}
+	@Autowired
+	public void SetVendingMachineChange(VendingMachineChange v) {
+		this.vendingMachineChange = v;
+	}
+	@Autowired
+	public void SetVendingMachineCoinBucket(VendingMachineCoinBucket v) {
+		this.vendingMachineCoinBucket = v;
+	}
+
+	
 	
 	public VendingMachineFloat VendingMachineFloat() {
 		return this.vendingMachineFloat;

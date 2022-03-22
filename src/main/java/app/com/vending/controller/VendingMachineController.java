@@ -36,9 +36,13 @@ public class VendingMachineController {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineController.class);
 	
+	private VendingMachine vendingMachine;
+	
 	@Autowired
-	public VendingMachine vendingMachine;
-
+	public void SetVendingMachine(VendingMachine v) {
+		this.vendingMachine = v;
+	}
+	
 	public VendingMachineController() {
 		log.debug("VendingMachineController");
 	}
