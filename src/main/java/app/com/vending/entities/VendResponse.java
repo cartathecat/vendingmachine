@@ -12,11 +12,8 @@ package app.com.vending.entities;
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @EntityScan

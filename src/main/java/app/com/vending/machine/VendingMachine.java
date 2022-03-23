@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import app.com.vending.entities.Coins.COINVALUE;
 import app.com.vending.entities.*;
-import app.com.vending.machine.VendingMachine.STATUS;
 import app.com.vending.machine.service.VendingMachineServiceImpl;
 
 @ComponentScan
