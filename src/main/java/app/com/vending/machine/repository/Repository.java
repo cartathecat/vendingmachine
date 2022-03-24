@@ -69,7 +69,10 @@ public class Repository {
 
 		Product dietFanta = new Product(10, "Diet Fanta", 125, 6);
 		products.add(dietFanta);
-		
+
+		Product gum = new Product(11, "Chewing Gum", 5, 6);
+		products.add(gum);
+
 	}
 	
 	/**

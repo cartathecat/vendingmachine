@@ -7,6 +7,8 @@ package app.com.vending;
  * 
  * Create a vending machine and appropriate beans 
  * 
+ * 24/03 - Removed VendingMachine bean
+ * 
  */
 
 import org.springframework.boot.SpringApplication;
@@ -30,10 +32,10 @@ public class VendingMachineApplication {
 		SpringApplication.run(VendingMachineApplication.class, args);
 	}
 
-	@Bean
-	public VendingMachine vendingMachine() {
-		return new VendingMachine();
-	}
+	//@Bean
+	//public VendingMachine vendingMachine() {
+	//	return new VendingMachine();
+	//}
 
 	@Bean
 	public Repository repository() {

@@ -6,7 +6,9 @@ package app.com.vending.machine;
  * March 2022
  * 
  * Vending machine object
- *  
+ * 
+ * 24/03 - Amended ComponentScan to Component
+ * 
  */
 
 import java.util.List;
@@ -14,14 +16,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import app.com.vending.entities.Coins.COINVALUE;
 import app.com.vending.entities.*;
 import app.com.vending.machine.service.VendingMachineServiceImpl;
 
-@ComponentScan
+@Component
 public class VendingMachine {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachine.class);
