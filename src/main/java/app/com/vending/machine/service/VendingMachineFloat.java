@@ -31,13 +31,13 @@ public class VendingMachineFloat extends Coins {
 
 
 	// Float value
-	public int GetFloatValue() {
+	public int getFloatValue() {
 		return this.floatValue;
 	}
-	public void SetFloatValue(int value) {
+	public void setFloatValue(int value) {
 		this.floatValue += value;
 	}
-	public void ReduceFloatValue(int value) {
+	public void reduceFloatValue(int value) {
 		this.floatValue -= value;
 	}
 	

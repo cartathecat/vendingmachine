@@ -53,7 +53,7 @@ public class VendingMachineController {
 		log.debug("initVending end-point");
 		log.debug("Coins: {}", coins);
 		this.vendingMachine.Initialise(coins);		
-		log.debug("Status of vending machine ...{}", this.vendingMachine.GetStatus() );
+		log.debug("Status of vending machine ...{}", this.vendingMachine.getStatus() );
 		return new ResponseEntity<>(this.vendingMachine.GenericResponse("Vending initialised"), HttpStatus.OK);
 	}
 

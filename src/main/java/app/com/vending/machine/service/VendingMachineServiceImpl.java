@@ -52,8 +52,6 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	public void SetVendingMachineCoinBucket(VendingMachineCoinBucket v) {
 		this.vendingMachineCoinBucket = v;
 	}
-
-	
 	
 	public VendingMachineFloat VendingMachineFloat() {
 		return this.vendingMachineFloat;
@@ -80,7 +78,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	 */
 	public void Initialise(int floatValue) {
 		log.debug("VendingMachineImpl - Initialise");
-		this.vendingMachineFloat.SetFloatValue(floatValue);
+		this.vendingMachineFloat.setFloatValue(floatValue);
 		repository.LoadProducts();		
 	}
 	
@@ -105,13 +103,13 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 		if (p.getQuantityCount() == 0) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Product code %s has sold out",id));
 		}
-		if (this.vendingMachineDeposit.GetDepositValue() < p.getPrice()) {
+		if (this.vendingMachineDeposit.getDepositValue() < p.getPrice()) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Insufficient funds to purchase product code %s",id));
 		}
 
 		// Do we have the coins for the change ?
-		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.GetDepositValue() - p.getPrice());
-		if (crList.size() == 0 && (this.vendingMachineDeposit.GetDepositValue() - p.getPrice() > 0)) {
+		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.getDepositValue() - p.getPrice());
+		if (crList.size() == 0 && (this.vendingMachineDeposit.getDepositValue() - p.getPrice() > 0)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for product %s",id));
 		}
 
@@ -124,15 +122,15 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 		log.debug("Quantity amended ...");
 	
 		// Calculate any change
-		this.vendingMachineChange.SetChangeValue(this.vendingMachineDeposit.GetDepositValue() - p.getPrice());
-		log.debug("Change is {}", vendingMachineChange.GetChangeValue());
+		this.vendingMachineChange.setChangeValue(this.vendingMachineDeposit.getDepositValue() - p.getPrice());
+		log.debug("Change is {}", vendingMachineChange.getChangeValue());
 		
-		this.vendingMachineFloat.SetFloatValue(p.getPrice());
+		this.vendingMachineFloat.setFloatValue(p.getPrice());
 		
-		log.debug("deposit    is {}", this.vendingMachineDeposit.GetDepositValue());
-		log.debug("floatValue is {}", this.vendingMachineFloat.GetFloatValue());
+		log.debug("deposit    is {}", this.vendingMachineDeposit.getDepositValue());
+		log.debug("floatValue is {}", this.vendingMachineFloat.getFloatValue());
 
-		return (new VendResponse(p, this.vendingMachineChange.GetChangeValue(), VENDTYPE.PRODUCT, crList));
+		return (new VendResponse(p, this.vendingMachineChange.getChangeValue(), VENDTYPE.PRODUCT, crList));
 	
 	}
 
@@ -157,13 +155,13 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	public VendResponse IssueRefund() {
 
 		// Do we have the coins for the change ?
-		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.GetDepositValue());
-		if (crList.size() == 0 && (this.vendingMachineDeposit.GetDepositValue() > 0)) {
+		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.getDepositValue());
+		if (crList.size() == 0 && (this.vendingMachineDeposit.getDepositValue() > 0)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for refund"));
 		}
 
 		// Build a response
-		VendResponse v = new VendResponse(null, this.VendingMachineDeposit().GetDepositValue(), VENDTYPE.REFUND, crList);
+		VendResponse v = new VendResponse(null, this.VendingMachineDeposit().getDepositValue(), VENDTYPE.REFUND, crList);
 
 		// Remove coins from the coin bucket and reset deposited amount
 		RemoveCoins(crList);

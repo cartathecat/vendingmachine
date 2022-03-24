@@ -26,10 +26,10 @@ public class VendingMachineChange {
 		this.changeValue = value;
 	}
 
-	public int GetChangeValue() {
+	public int getChangeValue() {
 		return this.changeValue;
 	}
-	public void SetChangeValue(int value) {
+	public void setChangeValue(int value) {
 		this.changeValue = value;
 	}
 

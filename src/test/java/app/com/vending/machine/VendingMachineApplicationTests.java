@@ -344,13 +344,35 @@ class VendingMachineApplicationTests {
 			.andExpect(status().reason(containsString("Please deposit money")));
 	
 	}
+
+	@Test
+	@Order(14)
+	public void givenAnInitialisedVendingMachine_vendAnItemWhereThereIsNotEnoughCoinsForRefund_givingNotENoughCoinsError() throws Exception {
+
+		String endpoint = "/vendingmachine/v1/deposit/TEN:1,TWO:1";
+		this.mvc.perform(post(endpoint))
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(content()
+			.json("{\"deposit\":12,\"message\":\"Deposit\"}"));
+
+		endpoint = "/vendingmachine/v1/vend/11";
+		this.mvc.perform(put(endpoint))
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(content()
+			.json("{\"product\":{\"id\":11,\"description\":\"Chewing Gum\",\"price\":5,\"quantityCount\":5},\"change\":7,\"vendType\":\"PRODUCT\",\"changeReturn\":[{\"coinQuantity\":1,\"coin\":\"FIVE\"},{\"coinQuantity\":1,\"coin\":\"TWO\"}]}"));
+				
+	}
 	
 	/**
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	@Order(14)
+	@Order(15)
 	public void givenPostedHttpRequests_validatePrometheusHttpCounts_givingExpectedHttpCountsPerCallType() throws Exception {
 		String endpoint = "/actuator/prometheus";		
 		MvcResult result = this.mvc.perform(get(endpoint))
@@ -370,7 +392,7 @@ class VendingMachineApplicationTests {
 		Assert.assertTrue(match);		
 
 		// Deposit
-		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"POST\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/deposit/{coins}\",} 5.0");
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"POST\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/deposit/{coins}\",} 6.0");
 		Assert.assertTrue(match);		
 
 		// Refund
@@ -382,7 +404,7 @@ class VendingMachineApplicationTests {
 		Assert.assertTrue(match);		
 
 		// Vend
-		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"PUT\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/vend/{id}\",} 2.0");
+		match = contentAsString.contains("http_server_requests_seconds_count{exception=\"None\",method=\"PUT\",outcome=\"SUCCESS\",status=\"200\",uri=\"/vendingmachine/v1/vend/{id}\",} 3.0");
 		Assert.assertTrue(match);		
 
 		// Float

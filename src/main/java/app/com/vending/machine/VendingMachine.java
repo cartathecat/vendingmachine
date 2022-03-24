@@ -43,16 +43,16 @@ public class VendingMachine {
 	
 	private STATUS status;
 	
-	public STATUS GetStatus() {
+	public STATUS getStatus() {
 		return status;
 	}
-	public void SetStatus(STATUS status) {
+	public void setStatus(STATUS status) {
 		this.status = status;
 	}
 		
 	public VendingMachine() {
 		log.debug("VendingMachine");
-		SetStatus(STATUS.INACTIVE);
+		setStatus(STATUS.INACTIVE);
 	}
 		
 	/**
@@ -61,14 +61,14 @@ public class VendingMachine {
 	 */
 	public void Initialise(List<String> coins) {
 		ValidateCoins(coins);
-		if (GetStatus().equals(STATUS.READY_TO_VEND)) {
+		if (getStatus().equals(STATUS.READY_TO_VEND)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine has already been initialized");
 		}
-		if (GetStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
+		if (getStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is in vending status");
 		}
 		this.vendingMachineServiceImpl.Initialise(CalculateFloat(coins));
-		SetStatus(STATUS.READY_TO_VEND);
+		setStatus(STATUS.READY_TO_VEND);
 		log.debug("Products loaded ...");
 		
 	}
@@ -78,7 +78,7 @@ public class VendingMachine {
 	 * @return
 	 */
 	public List<?> Products() {
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		return (this.vendingMachineServiceImpl.GetProducts());
@@ -108,21 +108,21 @@ public class VendingMachine {
 	 */
 	public CoinsDepositedResponse DepositAmount(List<String> coins) {				
 		ValidateCoins(coins);
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		try {
 			for (String c: coins) {
 				String[] s = c.split(":");
 				int qty = Integer.parseInt(s[1]);
-				this.vendingMachineServiceImpl.VendingMachineDeposit().SetDepositValue(qty * Coins.COINVALUE.coinValue(s[0].toUpperCase()));
+				this.vendingMachineServiceImpl.VendingMachineDeposit().setDepositValue(qty * Coins.COINVALUE.coinValue(s[0].toUpperCase()));
 				vendingMachineServiceImpl.VendingMachineCoinBucket().AddToFloatCoinBucket(s[0].toUpperCase(), qty);
 				log.debug("Deposit Coin   : {}", s[0]);
 				log.debug("Coint value : {}", Coins.COINVALUE.coinValue(s[0].toUpperCase()) );
 				
 			}		
-			SetStatus(STATUS.VENDING_IN_PROGRESS);
-			return (new CoinsDepositedResponse(this.vendingMachineServiceImpl.VendingMachineDeposit().GetDepositValue(), "Deposit"));
+			setStatus(STATUS.VENDING_IN_PROGRESS);
+			return (new CoinsDepositedResponse(this.vendingMachineServiceImpl.VendingMachineDeposit().getDepositValue(), "Deposit"));
 						
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Error parsing coins :%s",coins));
@@ -171,16 +171,16 @@ public class VendingMachine {
 	 * @return
 	 */
 	public VendResponse VendItem(int id) {
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
-		if (!GetStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
+		if (!getStatus().equals(STATUS.VENDING_IN_PROGRESS)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Please deposit money");
 		}
 
 		VendResponse v = this.vendingMachineServiceImpl.VendItem(id);		
-		this.vendingMachineServiceImpl.VendingMachineDeposit().ResetDepositValue(0);
-		SetStatus(STATUS.READY_TO_VEND);
+		this.vendingMachineServiceImpl.VendingMachineDeposit().resetDepositValue(0);
+		setStatus(STATUS.READY_TO_VEND);
 		return v;	
 	}
 
@@ -189,12 +189,12 @@ public class VendingMachine {
 	 * @return
 	 */
 	public VendResponse IssueRefund() {
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		VendResponse v = this.vendingMachineServiceImpl.IssueRefund();
-		this.vendingMachineServiceImpl.VendingMachineDeposit().ResetDepositValue(0);
-		SetStatus(STATUS.READY_TO_VEND);
+		this.vendingMachineServiceImpl.VendingMachineDeposit().resetDepositValue(0);
+		setStatus(STATUS.READY_TO_VEND);
 		return (v);
 	}
 	
@@ -203,11 +203,11 @@ public class VendingMachine {
 	 * @return
 	 */
 	public MoneyResponse GetFloat() {
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}		
-		int floatValue = this.vendingMachineServiceImpl.VendingMachineFloat().GetFloatValue();
-		int depositValue = this.vendingMachineServiceImpl.VendingMachineDeposit().GetDepositValue();		
+		int floatValue = this.vendingMachineServiceImpl.VendingMachineFloat().getFloatValue();
+		int depositValue = this.vendingMachineServiceImpl.VendingMachineDeposit().getDepositValue();		
 		return (new MoneyResponse(floatValue, depositValue));
 	}
 
@@ -216,7 +216,7 @@ public class VendingMachine {
 	 * @return
 	 */
 	public Map<COINVALUE, Integer> GetCoinBucket() {
-		if (GetStatus().equals(STATUS.INACTIVE)) {
+		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
 		return (this.vendingMachineServiceImpl.VendingMachineCoinBucket().GetFloatCoinBucket());
@@ -227,7 +227,7 @@ public class VendingMachine {
 	 * @return
 	 */
 	public VendingMachineStatusResponse GetVendingStatus() {
-		return (new VendingMachineStatusResponse(GetStatus()));
+		return (new VendingMachineStatusResponse(getStatus()));
 	}
 	
 }

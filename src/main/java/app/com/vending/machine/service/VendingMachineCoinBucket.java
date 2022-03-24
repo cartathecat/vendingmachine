@@ -55,16 +55,9 @@ public class VendingMachineCoinBucket extends Coins {
 			
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.TWOPOUND.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWOPOUND, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £2 pence coin");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWOPOUND, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £2 coin", coinsNeeded);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWOPOUND, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £2 pence coin");
 					change = change - (coinsNeeded * Coins.COINVALUE.TWOPOUND.getValue());
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWOPOUND, numberOfCoins);
@@ -84,16 +77,9 @@ public class VendingMachineCoinBucket extends Coins {
 			
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.ONEPOUND.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONEPOUND, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £1 coin");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONEPOUND, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £1 coin", coinsNeeded);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONEPOUND, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £1 coin");
 					change = change - (coinsNeeded * Coins.COINVALUE.ONEPOUND.getValue());
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONEPOUND, numberOfCoins);
@@ -114,16 +100,9 @@ public class VendingMachineCoinBucket extends Coins {
 			
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.FIFTY.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIFTY, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.50 coin");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIFTY, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.50 coin", coinsNeeded);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIFTY, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.50 coin");
 					change = change - (coinsNeeded * Coins.COINVALUE.FIFTY.getValue());
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIFTY, numberOfCoins);
@@ -144,16 +123,9 @@ public class VendingMachineCoinBucket extends Coins {
 
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.TWENTY.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWENTY, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.20 pence coins");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWENTY, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.20 coins", coinsNeeded);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWENTY, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.20 pence coins");
 					change = change - (coinsNeeded * Coins.COINVALUE.TWENTY.getValue());				
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWENTY, numberOfCoins);
@@ -173,16 +145,9 @@ public class VendingMachineCoinBucket extends Coins {
 
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {								
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.TEN.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TEN, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.10 coins");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TEN, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.10 coins", coinsNeeded);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TEN, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.10 coins");
 					change = change - (coinsNeeded * Coins.COINVALUE.TEN.getValue());				
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TEN, numberOfCoins);
@@ -202,16 +167,9 @@ public class VendingMachineCoinBucket extends Coins {
 
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.FIVE.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIVE, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.05 coins");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIVE, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.05 coins", numberOfCoins);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIVE, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.05 coins");
 					change = change - (coinsNeeded *Coins.COINVALUE.FIVE.getValue());
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.FIVE, numberOfCoins);
@@ -231,16 +189,9 @@ public class VendingMachineCoinBucket extends Coins {
 
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.TWO.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWO, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.02 coins");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWO, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.02 coins", numberOfCoins);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWO, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.02 coins");
 					change = change - (coinsNeeded * Coins.COINVALUE.TWO.getValue());
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.TWO, numberOfCoins);
@@ -260,16 +211,9 @@ public class VendingMachineCoinBucket extends Coins {
 
 			if (coinsNeeded > 0 && numberOfCoins > 0) {
 				if (coinsNeeded <= numberOfCoins) {				
-					int changeDiff = change - (coinsNeeded * Coins.COINVALUE.ONE.getValue());
-//					if (changeDiff == 0) {
-						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONE, coinsNeeded);
-						crList.add(cr);
-						log.debug("Found £0.01 coins");
-//					} else {
-//						ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONE, coinsNeeded);
-//						crList.add(cr);
-//						log.debug("Found {} £0.01 coins", numberOfCoins);
-//					}
+					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONE, coinsNeeded);
+					crList.add(cr);
+					log.debug("Found £0.01 coins");
 					change = change - (coinsNeeded * Coins.COINVALUE.ONE.getValue());				
 				} else {
 					ChangeReturnResponse cr = new ChangeReturnResponse(Coins.COINVALUE.ONE, numberOfCoins);
@@ -280,7 +224,7 @@ public class VendingMachineCoinBucket extends Coins {
 			}
 		}
 		if (change > 0) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for product "));
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for product"));
 		}
 		
 		return crList;

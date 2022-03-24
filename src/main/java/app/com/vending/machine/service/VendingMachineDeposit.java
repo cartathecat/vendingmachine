@@ -29,15 +29,15 @@ public class VendingMachineDeposit {
 	}
 
 	// Deposit value
-	public int GetDepositValue() {
+	public int getDepositValue() {
 		return this.depositValue;
 	}
 	
-	public void SetDepositValue(int value) {
+	public void setDepositValue(int value) {
 		this.depositValue += value;
 	}
 
-	public void ResetDepositValue(int value) {
+	public void resetDepositValue(int value) {
 		this.depositValue = value;
 	}
 
