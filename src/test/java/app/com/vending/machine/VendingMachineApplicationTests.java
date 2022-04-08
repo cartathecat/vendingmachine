@@ -109,7 +109,6 @@ class VendingMachineApplicationTests {
 			.andExpect(content()
 			.json("{\"floatValue\":3060,\"depositValue\":0}"));
 		
-		
 	}
 
 	/**
@@ -234,20 +233,18 @@ class VendingMachineApplicationTests {
 	public void givingAVendingMachineWithCoinsDeposited_listAndVendAProduct_givingAListOfProductsAndVendItem() throws Exception {
 		String endpoint = "/vendingmachine/v1/products";	
 		this.mvc.perform(get(endpoint))
-		.andExpect(status()
-		.isOk())
-		.andDo(MockMvcResultHandlers.print());
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print());
 
-		String actualProduct = "Cheese and Onion Crisps";	
 		endpoint = "/vendingmachine/v1/vend/1";		
-		MvcResult result = this.mvc.perform(put(endpoint))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andReturn();
+		this.mvc.perform(put(endpoint))
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(content()
+			.json("{\"product\":{\"id\":1,\"description\":\"Cheese and Onion Crisps\",\"price\":150,\"quantityCount\":9},\"change\":100,\"vendType\":\"PRODUCT\",\"changeReturn\":[{\"coinQuantity\":1,\"coin\":\"ONEPOUND\"}]}"));
 
-		String contentAsString = result.getResponse().getContentAsString();
-		VendResponse response = objectMapper.readValue(contentAsString, VendResponse.class);
-		Assert.assertEquals(response.getProduct().getDescription(), actualProduct);
 	}	
 
 	
@@ -270,22 +267,19 @@ class VendingMachineApplicationTests {
 			.andExpect(content()
 			.json("{\"deposit\":450,\"message\":\"Deposit\"}"));
 	
-		String actualProduct = "Coka Cola";	
 		endpoint = "/vendingmachine/v1/vend/7";		
-		MvcResult result = this.mvc.perform(put(endpoint))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andReturn();
-
-		String contentAsString = result.getResponse().getContentAsString();
-		VendResponse response = objectMapper.readValue(contentAsString, VendResponse.class);
-		Assert.assertEquals(response.getProduct().getDescription(), actualProduct);
-
+		this.mvc.perform(put(endpoint))
+			.andExpect(status()
+			.isOk())
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(content()
+			.json("{\"product\":{\"id\":7,\"description\":\"Coka Cola\",\"price\":140,\"quantityCount\":4},\"change\":310,\"vendType\":\"PRODUCT\",\"changeReturn\":[{\"coinQuantity\":1,\"coin\":\"TWOPOUND\"},{\"coinQuantity\":1,\"coin\":\"ONEPOUND\"},{\"coinQuantity\":1,\"coin\":\"TEN\"}]}"));
+				
 	}
 	
 	@Test
 	@Order(11)
-	public void givenAnInitialisedVendingMachine_requestCoinBucjetAndFloat_givingCoinBucketAndFLoat() throws Exception {
+	public void givenAnInitialisedVendingMachine_requestCoinBucketAndFloat_givingCoinBucketAndFLoat() throws Exception {
 		String endpoint = "/vendingmachine/v1/coinbucket";
 		this.mvc.perform(get(endpoint))
 			.andExpect(status()

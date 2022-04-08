@@ -31,8 +31,7 @@ public class VendingMachineController {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineController.class);
 	
-	private VendingMachine vendingMachine;
-	
+	private VendingMachine vendingMachine;	
 	@Autowired
 	public void SetVendingMachine(VendingMachine v) {
 		this.vendingMachine = v;
@@ -46,7 +45,12 @@ public class VendingMachineController {
 	 * Initialise endpoint
 	 * 
 	 * @param coins
+	 *     List of coins that can be passed in, delimited by a colon (:) for the quantity
+	 *     <p>
+	 *     TWOPOUND:5,ONEPOUND:10,FIFTY:10,TWENTY:10,TEN:20,FIVE:20,TWO:20,ONE:20
+	 *     
 	 * @return
+	 *     Returns a response to indicate the vending machine is initialised or an error
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/init/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> initVending(@PathVariable List<String> coins) {
@@ -61,7 +65,12 @@ public class VendingMachineController {
 	 * Deposit coins endpoint
 	 * 
 	 * @param coins
+	 *     List of coins that can be passed in, delimited by a colon (:) for the quantity
+	 *     <p>
+	 *     TWOPOUND:5,ONEPOUND:10,FIFTY:10,TWENTY:10,TEN:20,FIVE:20,TWO:20,ONE:20
+	 *     
 	 * @return
+	 *     Returns a response to show deposited money or an error
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/deposit/{coins}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> deposit(@PathVariable List<String> coins) {
@@ -73,6 +82,7 @@ public class VendingMachineController {
 	 * Products endpoint
 	 * 
 	 * @return
+	 *     Returns a response of a list of products
 	 */
 	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> products() {
@@ -84,7 +94,10 @@ public class VendingMachineController {
 	 * Vend endpoint
 	 * 
 	 * @param id
+	 *     Vend id selected
+	 *     
 	 * @return
+	 *     Returns a response to vended item or an error
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value = "/vend/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> vend(@PathVariable int id) {
@@ -96,6 +109,7 @@ public class VendingMachineController {
 	 * Refund endpoint
 	 * 
 	 * @return
+	 *     Returns a response for a refund or an error
 	 */
 	@GetMapping(value = "/refund", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> refund() {
@@ -107,6 +121,7 @@ public class VendingMachineController {
 	 * Floatvalue endpoint
 	 * 
 	 * @return
+	 *     Returns a response to show the float value or an error
 	 */
 	@GetMapping(value = "/floatvalue", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> floatValue() {
@@ -118,17 +133,26 @@ public class VendingMachineController {
 	 * Coinbucket endpoint
 	 * 
 	 * @return
+	 *     Returns a response to show the number of coins in the coin bucket or an error
 	 */
 	@GetMapping(value = "/coinbucket", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<?> coinBucket() {
+	public @ResponseBody ResponseEntity<?> coinBucket1() {
 		log.debug("coinBucket end-point");
-		return new ResponseEntity<>(this.vendingMachine.GetCoinBucket(), HttpStatus.OK);
+		return new ResponseEntity<>(this.vendingMachine.GetCoinBucketByString(), HttpStatus.OK);
 	}
 	
 	/**
 	 * Status endpoint
 	 * 
 	 * @return
+	 *     Returns a response to indicate the vending machine status or an error
+	 *     <p>
+	 *     INACTIVE            - Vending machine is inactive and not yet initialised
+	 *     <p>
+	 *     READY_TO_VEND       - Vending machine is ready to vend a product
+	 *     <p>
+     *     VENDING_IN_PROGRESS - Vending is in progress \n
+	 *     
 	 */
 	@GetMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> getStatus() {

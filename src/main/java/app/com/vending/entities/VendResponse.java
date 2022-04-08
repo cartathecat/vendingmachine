@@ -17,19 +17,19 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @EntityScan
-@JsonPropertyOrder({ "product", "change", "vendtype" ,"changeReturnResponse" })
+@JsonPropertyOrder({ "product", "change", "vendType" ,"changeReturnResponse" })
 public class VendResponse {
 	
 	private Product product;	
 	private int change;
-	private VENDTYPE vendtype;
-	private List<ChangeReturnResponse> changeReturnResponse;
+	private VENDTYPE vendType;
+	private List<ChangeReturnResponse> changeReturn;
 	
 	public VendResponse(Product p, int c, VENDTYPE v,List<ChangeReturnResponse> crList) {
 		this.product = p;
 		this.change = c;
-		this.vendtype = v;
-		this.changeReturnResponse = crList;
+		this.vendType = v;
+		this.changeReturn = crList;
 	}
 
 	public enum VENDTYPE {
@@ -53,23 +53,23 @@ public class VendResponse {
 	}
 	
 	public void setVendType(VENDTYPE v) {
-		this.vendtype = v;
+		this.vendType = v;
 	}
 	public VENDTYPE getVendType() {
-		return this.vendtype;
+		return this.vendType;
 	}
 	
 	public List<ChangeReturnResponse> getChangeReturn() {
-		return changeReturnResponse;
+		return changeReturn;
 	}
 	public void setChangeReturn(List<ChangeReturnResponse> cr) {
-		this.changeReturnResponse = cr;
+		this.changeReturn = cr;
 	}
 
 	@Override
 	public String toString() {
 		return String.format("VendResponse [product=%s, change=%s, vendtype=%s, changeReturnResponse=%s]", product,
-				change, vendtype, changeReturnResponse);
+				change, vendType, changeReturn);
 	}
 
 }

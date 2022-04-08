@@ -11,26 +11,18 @@ package app.com.vending.entities;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import app.com.vending.entities.Coins.COINVALUE;
-
 @EntityScan
 public class ChangeReturnResponse {
 
-	private COINVALUE coinName;
+	private String coinName;
 	private int coinQuantity;
-
-	public ChangeReturnResponse(COINVALUE coinName, int qty) {
+	
+	public ChangeReturnResponse(String coinName, int qty) {
 		super();
 		this.coinName = coinName;
 		this.coinQuantity = qty;
 	}
-	
-	public COINVALUE getCoin() {
-		return coinName;
-	}
-	public void setCoin(COINVALUE coin) {
-		this.coinName = coin;
-	}
+
 	public int getCoinQuantity() {
 		return coinQuantity;
 	}
@@ -38,9 +30,17 @@ public class ChangeReturnResponse {
 		this.coinQuantity = qty;
 	}
 
+	public String getCoin() {
+		return coinName;
+	}
+	public void setCoin(String coin) {
+		this.coinName = coin;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("ChangeReturnResponse [coinName=%s, coinQuantity=%s]", coinName, coinQuantity);
+		
 	}
 	
 }

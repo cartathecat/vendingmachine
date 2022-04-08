@@ -19,12 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-import app.com.vending.entities.Coins.COINVALUE;
+//import app.com.vending.entities.Coins.COINVALUE;
 import app.com.vending.entities.*;
+import app.com.vending.machine.VendingMachine.STATUS;
 import app.com.vending.machine.service.VendingMachineServiceImpl;
 
 @Component
-public class VendingMachine {
+public class VendingMachine extends Coins {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachine.class);
 
@@ -57,7 +58,9 @@ public class VendingMachine {
 		
 	/**
 	 * Initialise the vending machine
-	 * @param floatValue
+	 * 
+	 * @param coins
+	 *     Coins passed in
 	 */
 	public void Initialise(List<String> coins) {
 		ValidateCoins(coins);
@@ -75,23 +78,27 @@ public class VendingMachine {
 	
 	/**
 	 * Return a list of products
+	 * 
 	 * @return
+	 *     Return a list of products
 	 */
 	public List<?> Products() {
 		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
-		return (this.vendingMachineServiceImpl.GetProducts());
+		return (this.vendingMachineServiceImpl.GetAllProducts());
 	}
 
 	/**
-	 * Validate the coins 
+	 * Validate the coins
+	 *  
 	 * @param coins
+	 *     Coins passed in
 	 */
 	private void ValidateCoins(List<String> coins) {
 		for (String c: coins) {
 			String[] s = c.split(":");			
-			boolean coinValid = Coins.COINVALUE.coinValid(s[0].toUpperCase());
+			boolean coinValid = CoinValid(s[0]);
 			if (!coinValid) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,String.format("Coin %s is not valid",s[0]) );
 			}
@@ -103,8 +110,11 @@ public class VendingMachine {
 
 	/**
 	 * Deposit coins before vending
+	 * 
 	 * @param coins
+	 *     Coins passed in
 	 * @return
+	 *     Response of the deposited amount
 	 */
 	public CoinsDepositedResponse DepositAmount(List<String> coins) {				
 		ValidateCoins(coins);
@@ -115,10 +125,10 @@ public class VendingMachine {
 			for (String c: coins) {
 				String[] s = c.split(":");
 				int qty = Integer.parseInt(s[1]);
-				this.vendingMachineServiceImpl.VendingMachineDeposit().setDepositValue(qty * Coins.COINVALUE.coinValue(s[0].toUpperCase()));
-				vendingMachineServiceImpl.VendingMachineCoinBucket().AddToFloatCoinBucket(s[0].toUpperCase(), qty);
+				this.vendingMachineServiceImpl.VendingMachineDeposit().setDepositValue(qty * GetCoin(s[0].toUpperCase()).getCoinValue());
+				this.vendingMachineServiceImpl.VendingMachineCoinBucket().AddToFloatCoinBucketByString(s[0].toUpperCase(), qty);				
 				log.debug("Deposit Coin   : {}", s[0]);
-				log.debug("Coint value : {}", Coins.COINVALUE.coinValue(s[0].toUpperCase()) );
+				log.debug("Coin value     : {}", GetCoin(s[0].toUpperCase()).getCoinValue());
 				
 			}		
 			setStatus(STATUS.VENDING_IN_PROGRESS);
@@ -131,8 +141,11 @@ public class VendingMachine {
 
 	/**
 	 * Calculate the float
+	 * 
 	 * @param coins
+	 *     Coins passed in
 	 * @return
+	 *     Repsonse of float
 	 */
 	public int CalculateFloat(List<String> coins) {
 		int floatValue = 0;
@@ -140,12 +153,11 @@ public class VendingMachine {
 			for (String c: coins) {
 				String[] s = c.split(":");
 				int qty = Integer.parseInt(s[1]);
-				floatValue += (qty * Coins.COINVALUE.coinValue(s[0].toUpperCase()));			
-				this.vendingMachineServiceImpl.VendingMachineCoinBucket().AddToFloatCoinBucket(s[0].toUpperCase(), qty);				
+				floatValue += (qty * GetCoin(s[0].toUpperCase()).getCoinValue());			
+				this.vendingMachineServiceImpl.VendingMachineCoinBucket().AddToFloatCoinBucketByString(s[0].toUpperCase(), qty);				
 				log.debug("Coin   : {}", s[0]);
 				log.debug("Number : {}", s[1]);
-				log.debug("Coin {} has a value of {}", s[0], qty * Coins.COINVALUE.coinValue(s[0].toUpperCase()));
-				
+				log.debug("Coin {} has a value of {}", s[0], qty * GetCoin(s[0].toUpperCase()).getCoinValue());				
 			}
 			log.debug("Float value is {}", floatValue );		
 			return floatValue;
@@ -158,8 +170,10 @@ public class VendingMachine {
 	/**
 	 * Generic response
 	 * 
-	 * @param coins
+	 * @param msg
+	 *     Generic message passed in
 	 * @return
+	 *     Generic response
 	 */
 	public GenericResponse GenericResponse(String msg) {
 		return (new GenericResponse(msg));
@@ -167,8 +181,11 @@ public class VendingMachine {
 	
 	/**
 	 * Find a product 
+	 * 
 	 * @param id
+	 *     Vend id passed in
 	 * @return
+	 *     Response of item vend
 	 */
 	public VendResponse VendItem(int id) {
 		if (getStatus().equals(STATUS.INACTIVE)) {
@@ -178,15 +195,17 @@ public class VendingMachine {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Please deposit money");
 		}
 
-		VendResponse v = this.vendingMachineServiceImpl.VendItem(id);		
+		VendResponse v = this.vendingMachineServiceImpl.FindItem(id);		
 		this.vendingMachineServiceImpl.VendingMachineDeposit().resetDepositValue(0);
 		setStatus(STATUS.READY_TO_VEND);
 		return v;	
 	}
 
 	/**
-	 * Give a refund 
+	 * Give a refund
+	 *  
 	 * @return
+	 *     Response of a refund
 	 */
 	public VendResponse IssueRefund() {
 		if (getStatus().equals(STATUS.INACTIVE)) {
@@ -200,7 +219,9 @@ public class VendingMachine {
 	
 	/**
 	 * Get the float / deposit value
+	 * 
 	 * @return
+	 *     Response for float
 	 */
 	public MoneyResponse GetFloat() {
 		if (getStatus().equals(STATUS.INACTIVE)) {
@@ -212,19 +233,23 @@ public class VendingMachine {
 	}
 
 	/**
-	 * Get a list of coins from the coin bucket
+	 * Get a list of coins from the coin bucket by using the string name
+	 * 
 	 * @return
-	 */
-	public Map<COINVALUE, Integer> GetCoinBucket() {
+	 *     Return a list of coins in the coin bucket
+	 */	
+	public Map<String, Integer> GetCoinBucketByString() {
 		if (getStatus().equals(STATUS.INACTIVE)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Vending machine is not yet initialised");
 		}
-		return (this.vendingMachineServiceImpl.VendingMachineCoinBucket().GetFloatCoinBucket());
-	}
+		return (this.vendingMachineServiceImpl.VendingMachineCoinBucket().getFloatCoinBucketByString());
+	}	
 
 	/**
 	 * Get the current vending status
+	 * 
 	 * @return
+	 *     Current status of the vending machine
 	 */
 	public VendingMachineStatusResponse GetVendingStatus() {
 		return (new VendingMachineStatusResponse(getStatus()));

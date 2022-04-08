@@ -1,10 +1,38 @@
 spring:
   application:
     name: VendingMachine
+vendingmachine:
+  datasource:
+    url: jdbc:mysql://localhost:3306/vendingmachine
+    username: mmo275
+    password: ENC(WMezrsjef++P1Dv7wuUtr1effTWTeqZ20zUTmvYIEZcXz6ed6IyK5g/Yvfm6/JVk)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    continue-on-error: true
+  jpa: 
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        ddl-auto: update
+        show_sql: true
 logging:
   level:
     org:
-      springframework: OFF
+      springframework: DEBUG
+    app:
+      com:
+        vending:
+           entities: OFF
+validcoins:
+  coins:
+     - TWOPOUND:200
+     - ONEPOUND:100
+     - FIFTY:50
+     - TWENTY:20
+     - TEN:10
+     - FIVE:5
+     - TWO:2
+     - ONE:1     
 management:
   endpoints:
     web:

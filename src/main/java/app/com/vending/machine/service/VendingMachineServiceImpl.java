@@ -14,25 +14,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+
 import app.com.vending.entities.ChangeReturnResponse;
+import app.com.vending.entities.CoinConfig;
 import app.com.vending.entities.Product;
 import app.com.vending.entities.VendResponse;
 import app.com.vending.entities.VendResponse.VENDTYPE;
-import app.com.vending.machine.repository.Repository;
+import app.com.vending.machine.repository.ProductRepositoryImpl;
 
-public class VendingMachineServiceImpl implements VendingMachineService {
+public class VendingMachineServiceImpl implements IVendingMachineService {
 
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineServiceImpl.class);
 			
-	private Repository repository;
+	private ProductRepositoryImpl repository;
 	private VendingMachineFloat vendingMachineFloat;
 	private VendingMachineDeposit vendingMachineDeposit;
 	private VendingMachineChange vendingMachineChange;
 	private VendingMachineCoinBucket vendingMachineCoinBucket;
 	
+	private CoinConfig coinConfig;
+	
 	@Autowired
-	public void SetRepository(Repository v) {
+	public void SetProductRepositoryImpl(ProductRepositoryImpl v) {
 		this.repository = v;
 	}
 	@Autowired
@@ -52,7 +57,12 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	public void SetVendingMachineCoinBucket(VendingMachineCoinBucket v) {
 		this.vendingMachineCoinBucket = v;
 	}
-	
+
+	@Autowired
+	public void SetCoinConfig(CoinConfig v) {
+		this.coinConfig = v;
+	}
+
 	public VendingMachineFloat VendingMachineFloat() {
 		return this.vendingMachineFloat;
 	}
@@ -74,29 +84,38 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	}
 	
 	/**
-	 * Initialise - setting float and load the products
+	 * Initialise - set float
+	 * Products are loaded from a dstabase in the Repository class, using a method with PostConstruct
+	 * 
+	 * @param floatValue
+	 *     Value of the float value to initialise the vending machine
 	 */
 	public void Initialise(int floatValue) {
 		log.debug("VendingMachineImpl - Initialise");
 		this.vendingMachineFloat.setFloatValue(floatValue);
-		repository.LoadProducts();		
 	}
 	
 	/**
 	 * Return a list of products
+	 * 
 	 * @return
+	 *     A list of products
 	 */
-	public List<?> GetProducts() {
-		return (repository.GetProducts());
+	public List<?> GetAllProducts() {
+		return (repository.GetAllProducts());
 	}
 
 	/**
 	 * Vend an item 
 	 * 
+	 * @param id
+	 *     Item to vend
+	 * @return
+	 *     Return a vend item response
 	 */
-	public VendResponse VendItem(int id) {
+	public VendResponse FindItem(int id) {
 
-		Product p = repository.GetProduct(id);		
+		Product p = repository.FindProduct(id);		
 		if (p == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Product code %s not found", id));
 		}
@@ -107,8 +126,9 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Insufficient funds to purchase product code %s",id));
 		}
 
+
 		// Do we have the coins for the change ?
-		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.getDepositValue() - p.getPrice());
+		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChangeByString(this.vendingMachineDeposit.getDepositValue() - p.getPrice());
 		if (crList.size() == 0 && (this.vendingMachineDeposit.getDepositValue() - p.getPrice() > 0)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for product %s",id));
 		}
@@ -119,6 +139,8 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 		// Update stock for item
 		int qty = p.getQuantityCount();
 		p.setQuantityCount(qty - 1);
+		System.out.println("Updating qty ...");
+		repository.UpdateProduct(p);
 		log.debug("Quantity amended ...");
 	
 		// Calculate any change
@@ -138,12 +160,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	 * Remove coins from the coin bucket
 	 * 
 	 * @param crList
+	 *     List of coins to remove from the coin bucket
 	 */
 	public void RemoveCoins(List<ChangeReturnResponse> crList) {
 		for (ChangeReturnResponse r : crList) {
 			log.debug("Coin   : ()", r.getCoin());
 			log.debug("Qty    : ()", r.getCoinQuantity());
-			this.vendingMachineCoinBucket.RemoveCoinFromCoinBucket(r.getCoin(), r.getCoinQuantity());
+		//	this.vendingMachineCoinBucket.RemoveCoinFromCoinBucket(r.getCoin(), r.getCoinQuantity());
+			this.vendingMachineCoinBucket.RemoveCoinFromCoinBucketByString(r.getCoin().toString(), r.getCoinQuantity());
 		}	
 	}
 
@@ -151,11 +175,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 	 * Give a refund
 	 * 
 	 * @return
+	 *     Vend response to a refund
 	 */
 	public VendResponse IssueRefund() {
 
+		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChangeByString(this.vendingMachineDeposit.getDepositValue());
+
 		// Do we have the coins for the change ?
-		List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.getDepositValue());
+		//List<ChangeReturnResponse> crList = this.vendingMachineCoinBucket.CheckCoinsForChange(this.vendingMachineDeposit.getDepositValue());
 		if (crList.size() == 0 && (this.vendingMachineDeposit.getDepositValue() > 0)) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,String.format("Not enough coins to return change for refund"));
 		}
