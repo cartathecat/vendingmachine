@@ -10,11 +10,15 @@ package app.com.vending.machine.service;
  */
 
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import app.com.vending.entities.ChangeReturnResponse;
@@ -22,6 +26,7 @@ import app.com.vending.entities.CoinConfig;
 import app.com.vending.entities.Product;
 import app.com.vending.entities.VendResponse;
 import app.com.vending.entities.VendResponse.VENDTYPE;
+import app.com.vending.machine.repository.CounterRepositoryImpl;
 import app.com.vending.machine.repository.ProductRepositoryImpl;
 
 public class VendingMachineServiceImpl implements IVendingMachineService {
@@ -29,6 +34,8 @@ public class VendingMachineServiceImpl implements IVendingMachineService {
 	private final static Logger log = LoggerFactory.getLogger(VendingMachineServiceImpl.class);
 			
 	private ProductRepositoryImpl repository;
+	private CounterRepositoryImpl counterRepository;
+
 	private VendingMachineFloat vendingMachineFloat;
 	private VendingMachineDeposit vendingMachineDeposit;
 	private VendingMachineChange vendingMachineChange;
@@ -40,6 +47,11 @@ public class VendingMachineServiceImpl implements IVendingMachineService {
 	public void SetProductRepositoryImpl(ProductRepositoryImpl v) {
 		this.repository = v;
 	}
+	@Autowired
+	public void SetCounterRepositoryImpl(CounterRepositoryImpl v) {
+		this.counterRepository = v;
+	}
+
 	@Autowired
 	public void SetVendingMachineFloat(VendingMachineFloat v) {
 		this.vendingMachineFloat = v;
@@ -140,7 +152,8 @@ public class VendingMachineServiceImpl implements IVendingMachineService {
 		int qty = p.getQuantityCount();
 		p.setQuantityCount(qty - 1);
 		System.out.println("Updating qty ...");
-		repository.UpdateProduct(p);
+		UpdateDB(p);		
+		
 		log.debug("Quantity amended ...");
 	
 		// Calculate any change
@@ -156,6 +169,12 @@ public class VendingMachineServiceImpl implements IVendingMachineService {
 	
 	}
 
+	@Transactional(rollbackFor = Exception.class, noRollbackFor = EntityNotFoundException.class)
+	private void UpdateDB(Product p) {
+		repository.UpdateProduct(p);
+		counterRepository.UpdateCounter();
+		
+	}
 	/**
 	 * Remove coins from the coin bucket
 	 * 

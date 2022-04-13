@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,7 @@ import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuer
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import app.com.vending.entities.Product;
 
@@ -120,7 +120,7 @@ public class ProductRepositoryImpl  {
 	}
 
 	
-	@Transactional
+	//@Transactional
 	public void UpdateProduct(Product p) {
 		productRepository.save(p);
 	}
